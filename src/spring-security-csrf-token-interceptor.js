@@ -15,12 +15,12 @@
  */
 
 /*
- * com.allanditzel.spring-security-csrf-token-interceptor
+ * spring-security-csrf-token-interceptor
  *
  * Sets up an interceptor for all HTTP requests that adds the CSRF Token Header that Spring Security requires.
  */
 
-angular.module('com.allanditzel.spring-security-csrf-token-interceptor', [])
+angular.module('spring-security-csrf-token-interceptor', [])
     .config(function($httpProvider) {
         var xhr = new XMLHttpRequest();
         xhr.open('head', '/', false);
