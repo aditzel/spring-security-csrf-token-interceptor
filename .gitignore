@@ -52,5 +52,4 @@ src/main/webapp/static/node_modules/
 # Bower files #
 ###############
 node_modules/
-dist/
 generated/
