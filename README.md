@@ -10,7 +10,10 @@ same token on all HTTP requests.
 ````
 $ bower install spring-security-csrf-token-interceptor
 ````
-
+###Via NPM
+````
+$ npm install spring-security-csrf-token-interceptor
+````
 
 #Usage
 Include this as a depenency on your application:
