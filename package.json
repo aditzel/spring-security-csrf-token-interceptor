@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aditzel/spring-security-csrf-interceptor"
+    "url": "https://github.com/aditzel/spring-security-csrf-token-interceptor"
   },
   "keywords": [
     "spring-security",
@@ -20,9 +20,9 @@
   "author": "Allan Ditzel",
   "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/aditzel/spring-security-csrf-interceptor/issues"
+    "url": "https://github.com/aditzel/spring-security-csrf-token-interceptor/issues"
   },
-  "homepage": "https://github.com/aditzel/spring-security-csrf-interceptor",
+  "homepage": "https://github.com/aditzel/spring-security-csrf-token-interceptor",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.4.0",

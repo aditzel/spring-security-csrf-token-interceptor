@@ -14,7 +14,7 @@
     "interceptor"
   ],
   "license": "Apache 2.0",
-  "homepage": "https://github.com/aditzel/spring-security-csrf-interceptor",
+  "homepage": "https://github.com/aditzel/spring-security-csrf-token-interceptor",
   "ignore": [
     "**/.*",
     "node_modules",
