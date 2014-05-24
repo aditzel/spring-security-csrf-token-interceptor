@@ -28,7 +28,14 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
-            'dist/<%= pkg.name %>.min.js': ['generated/<%= pkg.name %>.js']
+            options: {
+                mangle: false
+            },
+            default: {
+                files:  {
+                    'dist/<%= pkg.name %>.min.js': ['generated/<%= pkg.name %>.js']
+                }
+            }
         }
     });
 
