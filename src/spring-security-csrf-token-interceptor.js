@@ -22,16 +22,22 @@
 
 angular.module('spring-security-csrf-token-interceptor', [])
     .config(function($httpProvider) {
+        var defaultCsrfTokenHeader = 'X-CSRF-TOKEN';
+        var csrfTokenHeaderName = 'X-CSRF-HEADER';
         var xhr = new XMLHttpRequest();
         xhr.open('head', '/', false);
         xhr.send();
-        var csrfToken = xhr.getResponseHeader('X-CSRF-TOKEN');
-        $httpProvider.interceptors.push(function($q) {
-            return {
-                request: function(config) {
-                    config.headers['X-CSRF-TOKEN'] = csrfToken;
-                    return config || $q.when(config);
-                }
-            };
-        });
+        var csrfTokenHeader = xhr.getResponseHeader(csrfTokenHeaderName);
+        csrfTokenHeader = csrfTokenHeader ? csrfTokenHeader : defaultCsrfTokenHeader;
+        var csrfToken = xhr.getResponseHeader(csrfTokenHeader);
+        if (csrfToken) {
+            $httpProvider.interceptors.push(function($q) {
+                return {
+                    request: function(config) {
+                        config.headers[csrfTokenHeader] = csrfToken;
+                        return config || $q.when(config);
+                    }
+                };
+            });
+        }
     });

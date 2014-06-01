@@ -1,6 +1,6 @@
 {
   "name": "spring-security-csrf-token-interceptor",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "An AngularJS interceptor for the HTTP service that adds the Spring Security CSRF token to all requests (if available).",
   "main": "src/spring-security-csrf-token-interceptor.js",
   "scripts": {
@@ -26,7 +26,9 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.4.0",
-    "grunt-contrib-uglify": "^0.4.0"
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-ngmin": "0.0.3"
   },
   "dependencies": {
     "grunt-contrib-jshint": "^0.10.0",
