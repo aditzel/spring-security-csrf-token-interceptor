@@ -22,22 +22,23 @@
 
 angular.module('spring-security-csrf-token-interceptor', [])
     .config(function($httpProvider) {
-        var defaultCsrfTokenHeader = 'X-CSRF-TOKEN';
-        var csrfTokenHeaderName = 'X-CSRF-HEADER';
-        var xhr = new XMLHttpRequest();
-        xhr.open('head', '/', false);
-        xhr.send();
-        var csrfTokenHeader = xhr.getResponseHeader(csrfTokenHeaderName);
-        csrfTokenHeader = csrfTokenHeader ? csrfTokenHeader : defaultCsrfTokenHeader;
-        var csrfToken = xhr.getResponseHeader(csrfTokenHeader);
-        if (csrfToken) {
-            $httpProvider.interceptors.push(function($q) {
-                return {
-                    request: function(config) {
-                        config.headers[csrfTokenHeader] = csrfToken;
-                        return config || $q.when(config);
-                    }
-                };
-            });
-        }
+        var getTokenData = function() {
+            var defaultCsrfTokenHeader = 'X-CSRF-TOKEN';
+            var csrfTokenHeaderName = 'X-CSRF-HEADER';
+            var xhr = new XMLHttpRequest();
+            xhr.open('head', '/', false);
+            xhr.send();
+            var csrfTokenHeader = xhr.getResponseHeader(csrfTokenHeaderName);
+            csrfTokenHeader = csrfTokenHeader ? csrfTokenHeader : defaultCsrfTokenHeader;
+            return { headerName: csrfTokenHeader, token: xhr.getResponseHeader(csrfTokenHeader) };
+        };
+        $httpProvider.interceptors.push(function($q) {
+            return {
+                request: function(config) {
+                    var csrfTokenData = getTokenData();
+                    config.headers[csrfTokenData.headerName] = csrfTokenData.token;
+                    return config || $q.when(config);
+                }
+            };
+        });
     });
