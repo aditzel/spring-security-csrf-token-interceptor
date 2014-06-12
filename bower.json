@@ -1,6 +1,6 @@
 {
   "name": "spring-security-csrf-token-interceptor",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "authors": [
     "Allan Ditzel <allan@allanditzel.com>"
   ],
