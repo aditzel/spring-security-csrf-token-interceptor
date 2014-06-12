@@ -32,10 +32,13 @@ angular.module('spring-security-csrf-token-interceptor', [])
             csrfTokenHeader = csrfTokenHeader ? csrfTokenHeader : defaultCsrfTokenHeader;
             return { headerName: csrfTokenHeader, token: xhr.getResponseHeader(csrfTokenHeader) };
         };
+        var csrfTokenData = getTokenData();
         $httpProvider.interceptors.push(function($q) {
             return {
                 request: function(config) {
-                    var csrfTokenData = getTokenData();
+                    if (config.method.toLowerCase() == "post") {
+                        csrfTokenData = getTokenData();
+                    }
                     config.headers[csrfTokenData.headerName] = csrfTokenData.token;
                     return config || $q.when(config);
                 }
