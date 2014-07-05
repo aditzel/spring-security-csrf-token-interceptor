@@ -33,6 +33,8 @@
                 return { headerName: csrfTokenHeader, token: xhr.getResponseHeader(csrfTokenHeader) };
             };
             var csrfTokenData = getTokenData();
+            var numRetries = 0;
+            var MAX_RETRIES = 5;
             $httpProvider.interceptors.push(function ($q, $injector) {
                 return {
                     request: function (config) {
@@ -40,12 +42,17 @@
                         return config || $q.when(config);
                     },
                     responseError: function (response) {
-                        console.log("There was an error processing the request", response);
-                        if (response.status == 403) {
+                        if (response.status == 403 && numRetries < MAX_RETRIES) {
                             csrfTokenData = getTokenData();
                             var $http = $injector.get('$http');
+                            ++numRetries;
                             return $http(response.config);
                         }
+                        return response;
+                    },
+                    response: function(response) {
+                        // reset number of retries on a successful response
+                        numRetries = 0;
                         return response;
                     }
                 };
