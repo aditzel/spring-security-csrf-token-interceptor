@@ -42,11 +42,15 @@
                         return config || $q.when(config);
                     },
                     responseError: function (response) {
+                        var newToken = response.headers(csrfTokenData.headerName);
                         if (response.status == 403 && numRetries < MAX_RETRIES) {
                             csrfTokenData = getTokenData();
                             var $http = $injector.get('$http');
                             ++numRetries;
                             return $http(response.config);
+                        } else if (newToken) {
+                            // update the csrf token incase of response errors other than 403
+                            csrfTokenData.token = newToken;
                         }
                         return response;
                     },
