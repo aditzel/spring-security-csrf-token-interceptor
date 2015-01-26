@@ -20,21 +20,24 @@
  * Sets up an interceptor for all HTTP requests that adds the CSRF Token Header that Spring Security requires.
  */
 (function () {
+    'use strict';
     angular.module('spring-security-csrf-token-interceptor', [])
         .config(function ($httpProvider) {
             var getTokenData = function () {
-                var defaultCsrfTokenHeader = 'X-CSRF-TOKEN';
-                var csrfTokenHeaderName = 'X-CSRF-HEADER';
-                var xhr = new XMLHttpRequest();
+                var defaultCsrfTokenHeader = 'X-CSRF-TOKEN',
+                    csrfTokenHeaderName = 'X-CSRF-HEADER',
+                    xhr = new XMLHttpRequest(),
+                    csrfTokenHeader;
                 xhr.open('head', '/', false);
                 xhr.send();
-                var csrfTokenHeader = xhr.getResponseHeader(csrfTokenHeaderName);
+                csrfTokenHeader = xhr.getResponseHeader(csrfTokenHeaderName);
                 csrfTokenHeader = csrfTokenHeader ? csrfTokenHeader : defaultCsrfTokenHeader;
                 return { headerName: csrfTokenHeader, token: xhr.getResponseHeader(csrfTokenHeader) };
-            };
-            var csrfTokenData = getTokenData();
-            var numRetries = 0;
-            var MAX_RETRIES = 5;
+            },
+            csrfTokenData = getTokenData(),
+            numRetries = 0,
+            MAX_RETRIES = 5;
+
             $httpProvider.interceptors.push(function ($q, $injector) {
                 return {
                     request: function (config) {
@@ -42,11 +45,16 @@
                         return config || $q.when(config);
                     },
                     responseError: function (response) {
-                        if (response.status == 403 && numRetries < MAX_RETRIES) {
+                        var newToken = response.headers(csrfTokenData.headerName),
+                            $http;
+                        if (response.status === 403 && numRetries < MAX_RETRIES) {
                             csrfTokenData = getTokenData();
-                            var $http = $injector.get('$http');
+                            $http = $injector.get('$http');
                             ++numRetries;
                             return $http(response.config);
+                        } else if (newToken) {
+                            // update the csrf token incase of response errors other than 403
+                            csrfTokenData.token = newToken;
                         }
                         return response;
                     },
