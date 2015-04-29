@@ -13,57 +13,117 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /*
  * spring-security-csrf-token-interceptor
  *
  * Sets up an interceptor for all HTTP requests that adds the CSRF Token Header that Spring Security requires.
  */
-(function () {
+(function() {
     'use strict';
     angular.module('spring-security-csrf-token-interceptor', [])
-        .config(function ($httpProvider) {
-            var getTokenData = function () {
-                var defaultCsrfTokenHeader = 'X-CSRF-TOKEN',
-                    csrfTokenHeaderName = 'X-CSRF-HEADER',
-                    xhr = new XMLHttpRequest(),
-                    csrfTokenHeader;
-                xhr.open('head', '/', false);
-                xhr.send();
-                csrfTokenHeader = xhr.getResponseHeader(csrfTokenHeaderName);
-                csrfTokenHeader = csrfTokenHeader ? csrfTokenHeader : defaultCsrfTokenHeader;
-                return { headerName: csrfTokenHeader, token: xhr.getResponseHeader(csrfTokenHeader) };
-            },
-            csrfTokenData = getTokenData(),
-            numRetries = 0,
-            MAX_RETRIES = 5;
+        .factory('csrfInterceptor', ['$injector', '$q',
+            function($injector) {
+                var $q = $injector.get('$q'),
+                    csrf = $injector.get('csrf'),
+                    // initialize the csrf provider service which inturn invokes the injected csrfService 
+                    // to fire the synchronours XHR call to get the CSRF token
+                    csrfService = csrf.init();
 
-            $httpProvider.interceptors.push(function ($q, $injector) {
                 return {
-                    request: function (config) {
-                        config.headers[csrfTokenData.headerName] = csrfTokenData.token;
+                    request: function(config) {
+                        // intercept HTTP request only for the configured HTTP types
+                        if (csrfService.settings.httpTypes.indexOf(config.method.toUpperCase()) > -1) {
+                            config.headers[csrfService.settings.csrfTokenHeader] = csrfService.token;
+                        }
                         return config || $q.when(config);
                     },
-                    responseError: function (response) {
-                        var newToken = response.headers(csrfTokenData.headerName),
-                            $http;
-                        if (response.status === 403 && numRetries < MAX_RETRIES) {
-                            csrfTokenData = getTokenData();
+                    responseError: function(response) {
+                        var $http,
+                            newToken = response.headers(csrfService.settings.csrfTokenHeader);
+                            
+                        if (response.status === 403 && csrfService.numRetries < csrfService.settings.maxRetries) {
+                            csrfService.getTokenData();
                             $http = $injector.get('$http');
-                            ++numRetries;
+                            csrfService.numRetries = csrfService.numRetries + 1;
                             return $http(response.config);
                         } else if (newToken) {
                             // update the csrf token incase of response errors other than 403
-                            csrfTokenData.token = newToken;
+                            csrfService.token = newToken;
                         }
                         return response;
                     },
                     response: function(response) {
                         // reset number of retries on a successful response
-                        numRetries = 0;
+                        csrfService.numRetries = 0;
                         return response;
                     }
                 };
-            });
-        });
-})();
+            }
+        ]).factory('csrfService', [
+
+            function() {
+                var defaults = {
+                    url: '/', // the url to which the CSRF call has to be made to get the token
+                    csrfHttpType: 'head', // the http method type which is used for making the CSRF token call
+                    maxRetries: 5, // number of retires allowed for forbidden requests
+                    csrfTokenHeader: 'X-CSRF-TOKEN',
+                    httpTypes: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'] // default allowed http types
+                };
+                return {
+                    inited: false,
+                    settings: null,
+                    numRetries: 0,
+                    token: '',
+                    init: function(options) {
+                        this.settings = angular.extend({}, defaults, options);
+                        this.getTokenData();
+                        console.log(this.settings, this.defaults, options);
+                    },
+                    getTokenData: function() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open(this.settings.csrfHttpType, this.settings.url, false);
+                        xhr.send();
+
+                        this.token = xhr.getResponseHeader(this.settings.csrfTokenHeader);
+                        this.inited = true;
+                    }
+                };
+
+            }
+        ]).provider('csrf', [
+
+            function() {
+                var CsrfModel = function CsrfModel(options) {
+                    return {
+                        options: options,
+                        csrfService: null
+                    };
+                };
+
+                return {
+                    $get: ['csrfService',
+                        function(csrfService) {
+                            var self = this;
+                            return {
+                                init: function() {
+                                    self.model.csrfService = csrfService;
+                                    self.model.csrfService.init(self.model.options);
+                                    return self.model.csrfService;
+                                }
+                            };
+                        }
+                    ],
+
+                    model: null,
+
+                    config: function(options) {
+                        this.model = new CsrfModel(options);
+                    }
+                };
+            }
+        ]).config(['$httpProvider',
+            function($httpProvider) {
+                $httpProvider.interceptors.push('csrfInterceptor');
+            }
+        ]);
+}());
