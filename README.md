@@ -23,7 +23,11 @@ Include this as a dependency on your application:
 ````javascript
 angular.module('myApp', ['spring-security-csrf-token-interceptor']);
 ````
+Use the `configProvider` to customize the interceptor behavior. Check 'Configuration' section for more details.
 
+````javascript
+ csrfProvider.config({});
+````
 #Configuration
 The following options are available for configuring the interceptor,
 
