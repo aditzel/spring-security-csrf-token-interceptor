@@ -25,8 +25,8 @@
             function($injector) {
                 var $q = $injector.get('$q'),
                     csrf = $injector.get('csrf'),
-                    // initialize the csrf provider service which inturn invokes the injected csrfService 
-                    // to fire the synchronours XHR call to get the CSRF token
+                    // initialize the csrf provider service which in-turn invokes the injected csrfService 
+                    // to fire the synchronous XHR call to get the CSRF token
                     csrfService = csrf.init();
 
                 return {
@@ -47,7 +47,7 @@
                             csrfService.numRetries = csrfService.numRetries + 1;
                             return $http(response.config);
                         } else if (newToken) {
-                            // update the csrf token incase of response errors other than 403
+                            // update the csrf token in-case of response errors other than 403
                             csrfService.token = newToken;
                         }
                         return response;
@@ -63,11 +63,11 @@
 
             function() {
                 var defaults = {
-                    url: '/', // the url to which the CSRF call has to be made to get the token
-                    csrfHttpType: 'head', // the http method type which is used for making the CSRF token call
+                    url: '/', // the URL to which the CSRF call has to be made to get the token
+                    csrfHttpType: 'head', // the HTTP method type which is used for making the CSRF token call
                     maxRetries: 5, // number of retires allowed for forbidden requests
                     csrfTokenHeader: 'X-CSRF-TOKEN',
-                    httpTypes: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'] // default allowed http types
+                    httpTypes: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'] // default allowed HTTP types
                 };
                 return {
                     inited: false,
