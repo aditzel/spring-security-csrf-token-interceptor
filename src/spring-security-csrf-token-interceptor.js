@@ -106,6 +106,7 @@
                             var self = this;
                             return {
                                 init: function() {
+                                    self.model = new CsrfModel(self.options);
                                     self.model.csrfService = csrfService;
                                     self.model.csrfService.init(self.model.options);
                                     return self.model.csrfService;
@@ -116,8 +117,10 @@
 
                     model: null,
 
+                    options: {},
+
                     config: function(options) {
-                        this.model = new CsrfModel(options);
+                        this.options = options;
                     }
                 };
             }
