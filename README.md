@@ -28,7 +28,7 @@ angular.module('myApp', ['spring-security-csrf-token-interceptor']);
 The following options are available for configuring the interceptor,
 
 ````
-Note: All these below configuration options are optional.
+Note: All these below configurations are optional.
 ````
 
 - `options` (Object) - Options to customize the CSRF interceptor behavior.
