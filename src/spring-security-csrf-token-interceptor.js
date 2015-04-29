@@ -50,7 +50,8 @@
                             // update the csrf token in-case of response errors other than 403
                             csrfService.token = newToken;
                         }
-                        return response;
+                        // Fix for interceptor causing failing requests
+                        return $q.reject(response);
                     },
                     response: function(response) {
                         // reset number of retries on a successful response
