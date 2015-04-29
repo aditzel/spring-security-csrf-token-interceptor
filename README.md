@@ -28,16 +28,20 @@ angular.module('myApp', ['spring-security-csrf-token-interceptor']);
 The following options are available for configuring the interceptor,
 
 ````
-Note: All these below configuration options are optional
-
+Note: All these below configuration options are optional.
 ````
 
 - `options` (Object) - Options to customize the CSRF interceptor behavior.
+
 - `options.url` (String) - The URL to which the initial CSRF request has to be made to get the CSRF token. Default: `\`.
+
 - `options.csrfHttpType` (String) - The HTTP method type which should be used while requesting the CSRF token call. Default: `head`.
-- `[options.maxRetries]` (Number) - The number of retries allowed for CSRF token call in-case of [403 Forbidden](http://en.wikipedia.org/wiki/HTTP_403) response errors. Default: `5`.
-- `[options.csrfTokenHeader]` (Array) - Set this option to add the CSRF headers only to some HTTP requests. Default: `['GET', 'HEAD', 'PUT', 'POST', 'DELETE']`.
-- `[options.csrfTokenHeader]` (String) - Customize the name of the CSRF header on the requests. Default: `X-CSRF-TOKEN`.
+
+- `options.maxRetries` (Number) - The number of retries allowed for CSRF token call in-case of [403 Forbidden](http://en.wikipedia.org/wiki/HTTP_403) response errors. Default: `5`.
+
+- `options.csrfTokenHeader` (Array) - Set this option to add the CSRF headers only to some HTTP requests. Default: `['GET', 'HEAD', 'PUT', 'POST', 'DELETE']`.
+
+- `options.csrfTokenHeader` (String) - Customize the name of the CSRF header on the requests. Default: `X-CSRF-TOKEN`.
 
 ###Example
 
