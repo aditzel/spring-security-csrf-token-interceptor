@@ -1,8 +1,8 @@
 #spring-security-csrf-token-interceptor
 
-An AngularJS interceptor that will include the CSRF token header in HTTP requests.
+> An AngularJS interceptor that will include the CSRF token header in HTTP requests.
 
-It does this by doing an AJAX HTTP HEAD call to / by default, and then retrieves the HTTP header 'X-CSRF-TOKEN' and sets this
+> It does this by doing an AJAX HTTP HEAD call to / by default, and then retrieves the HTTP header 'X-CSRF-TOKEN' and sets this
 same token on all HTTP requests.
 
 `spring-security-csrf-token-interceptor` also supports configuring the CSRF header name, number of retries allowed in-case of Forbidden errors, restrict adding the CSRF tokens to some HTTP types etc.
@@ -23,7 +23,7 @@ Include this as a dependency on your application:
 ````javascript
 angular.module('myApp', ['spring-security-csrf-token-interceptor']);
 ````
-Use the `configProvider` to customize the interceptor behavior. Check 'Configuration' section for more details.
+Use the `configProvider` to customize the interceptor behavior. Check [Configuration](#Configuration) section for more details.
 
 ````javascript
  csrfProvider.config({});
