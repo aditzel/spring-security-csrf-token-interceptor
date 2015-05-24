@@ -15,7 +15,8 @@
     "csrf",
     "token",
     "http",
-    "interceptor"
+    "interceptor",
+    "angularJS"
   ],
   "author": "Allan Ditzel",
   "license": "Apache 2.0",
