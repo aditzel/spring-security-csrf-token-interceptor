@@ -23,7 +23,7 @@ $ npm install spring-security-csrf-token-interceptor-extended
 Include this as a dependency on your application:
 
 ````javascript
-angular.module('myApp', ['spring-security-csrf-token-interceptor']);
+angular.module('myApp', ['spring-security-csrf-token-interceptor-extended']);
 ````
 Use the `configProvider` to customize the interceptor behavior. Check [Configuration](#Configuration) section for more details.
 
@@ -54,7 +54,7 @@ Note: All these below configurations are optional.
 ```js
     angular
         .module('myApp', [
-            'spring-security-csrf-token-interceptor'
+            'spring-security-csrf-token-interceptor-extended'
         ])
         .config(function(csrfProvider) {
             // optional configurations

@@ -1,5 +1,5 @@
 {
-  "name": "spring-security-csrf-token-interceptor",
+  "name": "spring-security-csrf-token-interceptor-extended",
   "version": "0.2.1",
   "description": "An AngularJS interceptor for the HTTP service that adds the Spring Security CSRF token to all requests (if available).",
   "main": "src/spring-security-csrf-token-interceptor.js",
