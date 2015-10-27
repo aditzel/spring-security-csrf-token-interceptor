@@ -1,11 +1,11 @@
 {
   "name": "spring-security-csrf-token-interceptor-extended",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "authors": [
     "Allan Ditzel <allan@allanditzel.com>"
   ],
   "description": "An AngularJS interceptor for the HTTP service that adds the Spring Security CSRF token to all requests (if available).",
-  "main": "dist/spring-security-csrf-token-interceptor.js",
+  "main": "dist/spring-security-csrf-token-interceptor-extended.js",
   "keywords": [
     "spring-security",
     "csrf",
