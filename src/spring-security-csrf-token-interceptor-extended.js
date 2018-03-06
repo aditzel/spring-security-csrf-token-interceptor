@@ -25,7 +25,7 @@
             function($injector) {
                 var $q = $injector.get('$q'),
                     csrf = $injector.get('csrf'),
-                    // initialize the csrf provider service which in-turn invokes the injected csrfService 
+                    // initialize the csrf provider service which in-turn invokes the injected csrfService
                     // to fire the synchronous XHR call to get the CSRF token
                     csrfService = csrf.init();
 
@@ -40,7 +40,7 @@
                     responseError: function(response) {
                         var $http,
                             newToken = response.headers(csrfService.settings.csrfTokenHeader);
-                            
+
                         if (response.status === 403 && csrfService.numRetries < csrfService.settings.maxRetries) {
                             csrfService.getTokenData();
                             $http = $injector.get('$http');
@@ -78,7 +78,6 @@
                     init: function(options) {
                         this.settings = angular.extend({}, defaults, options);
                         this.getTokenData();
-                        console.log(this.settings, this.defaults, options);
                     },
                     getTokenData: function() {
                         var xhr = new XMLHttpRequest();
