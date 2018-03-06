@@ -1,4 +1,4 @@
-#spring-security-csrf-token-interceptor-extended
+# spring-security-csrf-token-interceptor-extended
 
 > An AngularJS interceptor that will include the CSRF token header in HTTP requests.
 
@@ -9,17 +9,17 @@ same token on all HTTP requests.
 
 > This package is actually forked from [aditzel](https://github.com/aditzel/spring-security-csrf-token-interceptor) to continuing the support for latest versions.
 
-#Installing
-###Via Bower
+# Installing
+### Via Bower
 ````
 $ bower install spring-security-csrf-token-interceptor-extended
 ````
-###Via NPM
+### Via NPM
 ````
 $ npm install spring-security-csrf-token-interceptor-extended
 ````
 
-#Usage
+# Usage
 Include this as a dependency on your application:
 
 ````javascript
@@ -30,7 +30,7 @@ Use the `configProvider` to customize the interceptor behavior. Check [Configura
 ````javascript
  csrfProvider.config({});
 ````
-#Configuration
+# Configuration
 The following options are available for configuring the interceptor,
 
 ````
@@ -49,7 +49,7 @@ Note: All these below configurations are optional.
 
 - `options.csrfTokenHeader` (String) - Customize the name of the CSRF header on the requests. Default: `X-CSRF-TOKEN`.
 
-###Example
+### Example
 
 ```js
     angular
